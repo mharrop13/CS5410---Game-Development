@@ -1,6 +1,5 @@
 document.title = "CS5410 HW1 - Browser GameLoop";
 
-let framerate = 1000/60;
 let lastRender = 0;
 var eventArray = [];
 let toRender = []
@@ -37,11 +36,10 @@ function update(timestamp) {
             event.passedInterval -= progress;
             if (event.passedInterval <= 0 && event.occurences > 0) {
                 event.occurences -= 1;
-                event.passedInterval += event.interval;
+                event.passedInterval = event.interval;
                 let message = "Event: " + event.name + "("
                 + event.occurences + " remaining)";
                 toRender.push(message);
-                //delete event
             }
 
             if (event.occurences <= 0) {
@@ -49,6 +47,7 @@ function update(timestamp) {
             }
         }
     }
+    lastRender = timestamp;
 }
 
 //This method takes messages from the event array and prints them out in the
@@ -61,12 +60,11 @@ function draw() {
         output.innerHTML += toRender[spot] + "<br>";
         output.scrollTop = output.scrollHeight;
     }
-    toRender = [];                                                              // Clear the array
+    toRender = [];
 }
 
 function gameLoop(timestamp) {
     update(timestamp);
     draw();
-    lastRender = timestamp;
     requestAnimationFrame(gameLoop);
 }
