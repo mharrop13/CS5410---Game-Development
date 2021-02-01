@@ -2,7 +2,7 @@ document.title = "CS5410 HW1 - Browser GameLoop";
 const BODY = document.body;
 
 
-//Initialize Game - Load Graphics
+//Initialize Game - Load Graphics lines 6 - 88
 const HEADER = document.createElement('div');
 HEADER.setAttribute('class', 'header bold blue');
 BODY.appendChild(HEADER);
