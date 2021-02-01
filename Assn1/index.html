@@ -7,10 +7,10 @@
 		<title>Game Loop-</title>
 		<meta charset="utf-8">
 		<link href="style.css" rel="stylesheet">
+		<script src="gameloop.js"> </script>
 	</head>
 
-	<body>
-		<script src="gameloop.js" defer> </script>
+	<body onload="gameLoop(performance.now())">
 		<div class="header bold blue">
 		 	<h1> Browser GameLoop</h1>
 		</div>

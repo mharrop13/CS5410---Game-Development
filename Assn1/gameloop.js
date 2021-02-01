@@ -1,5 +1,9 @@
 document.title = "CS5410 HW1 - Browser GameLoop";
-const BODY = document.body;
+
+let framerate = 1000/60;
+let lastRender = 0;
+var eventArray = [];
+let toRender = []
 
 //Timed Event Class provides an easy structure for events to comply to when
 //button is pressed. Receives values from nameInput, intervalInput, and occurenceInput
@@ -17,11 +21,6 @@ class TimedEvent {
 function processInput() {
     let makeEvent = new TimedEvent(nameInput.value, intervalInput.value, occurenceInput.value);
     eventArray.push(makeEvent);
-
-    //Lines 105 - 106 just used to verify button press is indeed working
-    //incrementing list
-    var output = document.getElementById("console");
-    output.innerHTML += eventArray.length + "<br>";
 }
 
 //Update method goes through each event in the event array and checks it's progress
@@ -30,22 +29,25 @@ function processInput() {
 //When the event has no more occurences, it will remove it from the event array.
 //When an event fires, it writes a message like: "Event: First (9 remaining)"
 //and adds the message to the toRender array.
-function update(progress) {
+function update(timestamp) {
+    let progress = timestamp - lastRender;
     if (eventArray.length > 0) {
-        // for (let index in eventArray) {
-        //     let event = eventArray[index];
-        //     event.passedInterval -= progress;
-        //     if (event.passedInterval <= 0) {
-        //         event.occurences -= 1;
-        //         event.passedInterval += event.interval;
-        //         let message = "Event: " + event.name + "("
-        //         + event.occurences + " remaining)";
-        //         toRender.push(message);
-        //         if (event.occurences = 0) {
-        //             eventArray.splice(index,1);
-        //         }
-        //     }
-        // }
+        for (let index in eventArray) {
+            let event = eventArray[index];
+            event.passedInterval -= progress;
+            if (event.passedInterval <= 0 && event.occurences > 0) {
+                event.occurences -= 1;
+                event.passedInterval += event.interval;
+                let message = "Event: " + event.name + "("
+                + event.occurences + " remaining)";
+                toRender.push(message);
+                //delete event
+            }
+
+            if (event.occurences <= 0) {
+                delete event;
+            }
+        }
     }
 }
 
@@ -57,41 +59,14 @@ function draw() {
     var output = document.getElementById("console");
     for (let spot in toRender) {
         output.innerHTML += toRender[spot] + "<br>";
+        output.scrollTop = output.scrollHeight;
     }
     toRender = [];                                                              // Clear the array
 }
 
 function gameLoop(timestamp) {
-    let progress = timestamp - lastRender;
-    // console.log(progress);
-    update(progress);
-    // // draw();
+    update(timestamp);
+    draw();
     lastRender = timestamp;
-    // requestAnimationFrame(gameLoop(performance.now()));
-
-    //Loop to control framerate to 60fps. May or may not work
-    if (progress >= framerate) {
-         requestAnimationFrame(gameLoop(performance.now()));
-    } else {
-        setTimeout(requestAnimationFrame(gameLoop(performance.now())), framerate - progress);
-    }
-}
-
-let framerate = 1000/60;
-let lastRender = 0;
-var eventArray = [];
-let toRender = []
-//
-// requestAnimationFrame(gameLoop(performance.now()));
-
-//This is just a test function to make sure the buttom was working properly
-function gimme() {
-    // let makeEvent = {name:nameInput.value}
-    let makeEvent = new TimedEvent(nameInput.value, intervalInput.value, occurenceInput.value);
-    eventArray.push(makeEvent);
-    var output = document.getElementById("console");
-    // output.innerHTML += makeEvent.name + makeEvent.interval  + makeEvent.occurences + makeEvent.passedInterval + "<br>";
-    output.innerHTML += eventArray.length + "<br>";
-
-
+    requestAnimationFrame(gameLoop);
 }
