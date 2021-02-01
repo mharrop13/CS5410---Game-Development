@@ -1,4 +1,12 @@
+form {
+	text-align: center;
+	float: left
+	width: 33%
+}
 
+pre {
+	font-family: "Times New Roman", Times, serif;
+}
 
 .header {
 	box-sizing: border-box;
