@@ -87,6 +87,8 @@ addEventButton.setAttribute('onclick', 'addEventToQueue()');
 addEventButton.setAttribute('value', 'Compute');
 inputForm.appendChild(addEventButton);
 
+//Timed Event Class provides an easy structure for events to comply to when
+//button is pressed. Receives values from nameInput, intervalInput, and occurenceInput
 class TimedEvent {
     constructor(name, interval, occurences) {
         this.name = name;
@@ -96,36 +98,46 @@ class TimedEvent {
     }
 }
 
+//When button is clicked, this method makes an event and adds it to the
+//array of events
 function addEventToQueue() {
     let makeEvent = new TimedEvent(nameInput.value, intervalInput.value, occurenceInput.value);
     eventArray.push(makeEvent);
+
+    //Lines 105 - 106 just used to verify button press is indeed working
+    //incrementing list
     var output = document.getElementById("console");
     output.innerHTML += eventArray.length + "<br>";
-    // requestAnimationFrame(gameLoop(performance.now()));
 }
 
+//Update method goes through each event in the event array and checks it's progress
+//if it is the correct time interval to fire event, it fires the event, resets
+//the events timer til it fires again, and minuses one from the event's occurences
+//When the event has no more occurences, it will remove it from the event array.
+//When an event fires, it writes a message like: "Event: First (9 remaining)"
+//and adds the message to the toRender array.
 function update(progress) {
-    // Update the state of the world for the elapsed time since last render
     if (eventArray.length > 0) {
         // for (let index in eventArray) {
         //     let event = eventArray[index];
         //     event.passedInterval -= progress;
         //     if (event.passedInterval <= 0) {
-        //         event.occurences -= 1;                                              // Minus 1 from occurences
-        //         event.passedInterval += event.interval;                             // Resets how much time has passed for the event
+        //         event.occurences -= 1;
+        //         event.passedInterval += event.interval;
         //         let message = "Event: " + event.name + "("
         //         + event.occurences + " remaining)";
         //         toRender.push(message);
         //         if (event.occurences = 0) {
-        //             eventArray.splice(index,1);                                     //Remove event if out of occurences
+        //             eventArray.splice(index,1);
         //         }
         //     }
         // }
-        var output = document.getElementById("console");
-        output.innerHTML += eventArray.length + "<br>";
     }
 }
 
+//This method takes messages from the event array and prints them out in the
+//left hand window. Once it's done printing all the event fired messages,
+//it clears the list in preparation for the new incoming events
 function draw() {
     //  Draw the state of the world
     var output = document.getElementById("console");
@@ -142,27 +154,23 @@ function gameLoop(timestamp) {
     // // draw();
     lastRender = timestamp;
     // requestAnimationFrame(gameLoop(performance.now()));
-    // let testevent = new TimedEvent(nameInput.value, intervalInput.value, occurenceInput.value);
-    // eventArray.push(testevent);
-    // let makeEvent = eventArray[0];
-    // var output = document.getElementById("console");
-    // output.innerHTML += makeEvent.name + makeEvent.interval  + makeEvent.occurences + makeEvent.passedInterval + "<br>";
+
+    //Loop to control framerate to 60fps. May or may not work
     if (progress >= framerate) {
          requestAnimationFrame(gameLoop(performance.now()));
     } else {
         setTimeout(requestAnimationFrame(gameLoop(performance.now())), framerate - progress);
     }
-    // requestAnimationFrame(gameLoop(performance.now()));
 }
 
 let framerate = 1000/60;
 let lastRender = 0;
 var eventArray = [];
-let toRender = [];
-// gameLoop();
-
+let toRender = []
+//
 // requestAnimationFrame(gameLoop(performance.now()));
 
+//This is just a test function to make sure the buttom was working properly
 function gimme() {
     // let makeEvent = {name:nameInput.value}
     let makeEvent = new TimedEvent(nameInput.value, intervalInput.value, occurenceInput.value);
