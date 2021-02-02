@@ -56,12 +56,11 @@ function update(timestamp) {
 function render() {
     //  Draw the state of the world
     var output = document.getElementById("console");
-    for (let spot of toRender) {
-        output.innerHTML += spot + "<br>";
+    for (let spot in toRender) {
+        output.innerHTML += toRender[spot] + "<br>";
         output.scrollTop = output.scrollHeight;
+        toRender.splice(spot, 1);
     }
-    //Reset render queue back to empty to await further renders
-    toRender = [];
 }
 
 function gameLoop(timestamp) {
