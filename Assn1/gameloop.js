@@ -41,9 +41,9 @@ function update(timestamp) {
                 + event.occurences + " remaining)";
                 toRender.push(message);
             }
-
+            //Remove old events when finished
             if (event.occurences <= 0) {
-                delete event;
+                eventArray.splice(index, 1);
             }
         }
     }
@@ -53,18 +53,19 @@ function update(timestamp) {
 //This method takes messages from the event array and prints them out in the
 //left hand window. Once it's done printing all the event fired messages,
 //it clears the list in preparation for the new incoming events
-function draw() {
+function render() {
     //  Draw the state of the world
     var output = document.getElementById("console");
-    for (let spot in toRender) {
-        output.innerHTML += toRender[spot] + "<br>";
+    for (let spot of toRender) {
+        output.innerHTML += spot + "<br>";
         output.scrollTop = output.scrollHeight;
     }
+    //Reset render queue back to empty to await further renders
     toRender = [];
 }
 
 function gameLoop(timestamp) {
     update(timestamp);
-    draw();
+    render();
     requestAnimationFrame(gameLoop);
 }
