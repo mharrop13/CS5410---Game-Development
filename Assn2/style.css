@@ -1,0 +1,116 @@
+form {
+	text-align: center;
+	float: left
+	width: 33%
+}
+
+pre {
+	font-family: "Times New Roman", Times, serif;
+}
+
+.header {
+	box-sizing: border-box;
+	border: 1px solid black;
+	padding: 15px;
+	text-align: center;
+
+}
+
+.consoleBox {
+	box-sizing: border-box;
+	width: 50%;
+	height: 240px;
+	float: left;
+	padding: 15px;
+	border: 1px solid black;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.inputBox {
+	box-sizing: border-box;
+	text-align: center;
+	width: 50%;
+	height: 240px;
+	float: left;
+	padding: 15px;
+	border: 1px solid black;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.center {
+	margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+     -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.shadowed {
+	text-shadow: 1px 1px 2px black;
+	color:       white;
+}
+
+.stuff-box {
+	font-family: 'helvetica neue', helvetica, sans-serif;
+	color: white;
+	letter-spacing: 1px;
+	text-transform: capitalize;
+	text-align: center;
+	padding: 3px 10px;
+	margin: 10px;
+	cursor: pointer;
+	border-radius: 10px;
+	border-width: 2px;
+	border-style: solid;
+}
+
+.timestamp {
+    font-size: smaller;
+    font-family: monospace;
+    padding: 0px 10px;
+}
+
+.white {
+	border-color: rgb(0,0,0);
+	background:   rgb(255,255,255);
+	color: black;
+}
+
+.red {
+	border-color: rgb(0,0,0);
+	background:   rgb(180,60,60);
+	box-shadow: 1px 1px 2px rgba(200,0,0,0.4);
+}
+
+.yellow {
+	border-color: rgb(255,255,0);
+	background:   rgb(180,180,60);
+	box-shadow: 1px 1px 2px rgba(200,200,0,0.4);
+}
+
+.blue {
+	border-color: rgb(0,0,0);
+	background:   rgb(20, 243, 243);
+	box-shadow: 1px 1px 2px rgba(0,0,200,0.4);
+}
+
+.green {
+	border-color: rgb(0,0,0);
+	background:   rgb(60,180,60);
+	box-shadow: 1px 1px 2px rgba(0,200,0,0.4);
+}
+
+.black {
+    border-color: rgb(0,0,0);
+    background:   rgb(75,75,75);
+    box-shadow: 1px 1px 2px rgba(200,200,0,0.4);
+}
+
+.inline {
+	display: inline;
+}

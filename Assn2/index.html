@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<!-- Changes you make to this file will not be reviewed by the grader -->
+
+<html lang="en">
+	<head>
+		<title>Game Loop-</title>
+		<meta charset="utf-8">
+		<link href="style.css" rel="stylesheet">
+		<script src="gameloop.js"> </script>
+	</head>
+
+	<body onload="gameLoop(performance.now())">
+		<div class="header bold blue">
+		 	<h1> Browser GameLoop</h1>
+		</div>
+		<div class="white">
+		 	<div id="console" class="consoleBox white")>
+			</div>
+			<div id="inputBox" class="inputBox white")>
+				<form id="inputForm">
+					<label for="nameInput"> Name :      </label>
+					<input type="text" id="nameInput" name="nameInput"><br>
+					<label for="intervalInput"> Interval: </label>
+					<input type="number" id="intervalInput" name="intervalInput"><br>
+					<label for="occurenceInput"> Occurences: </label>
+					<input type="number" id="occurenceInput" name="occurenceInput"><br>
+					<input type="button" onclick="processInput()" value = "Add Event">
+				</form>
+			</div>
+		</div>
+		<div class="header blue">
+		 	<h3> Created by Michael Harrop for CS5410 </h3>
+		</div>
+
+
+	</body>
+</html>
