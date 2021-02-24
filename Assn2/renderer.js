@@ -1,21 +1,5 @@
 let gridSize = 1000;
 
-let startPoint = {
-    x: 100,
-    y: 100,
-    rad: 70,
-    fillStyle: 'rgba(0, 123, 255, 1)',
-    strokeStyle: 'rgba(0, 0, 0, 1)',
-}
-
-let endPoint = {
-    x: 100,
-    y: 100,
-    rad: 70,
-    fillStyle: 'rgba(0, 123, 255, 1)',
-    strokeStyle: 'rgba(0, 0, 0, 1)',
-}
-
 let backImage = new Image();
 backImage.isReady = false;
 backImage.onload = function() {
@@ -79,21 +63,13 @@ function renderMaze(mazeSize) {
     context.stroke();
 }
 
-function renderObjects(objectList, mazeSize) {
-    context.drawImage(objectList.image,
-    objectList.location.x * (gridSize / mazeSize) - 15, objectList.location.y * (gridSize / mazeSize) - 15,
-    gridSize / mazeSize + 30, gridSize / mazeSize + 30);
-}
-
-function renderStart(start, mazeSize) {
-    context.drawImage(start.image,
-    start.location.x * (gridSize / mazeSize), start.location.y * (gridSize / mazeSize),
-    gridSize / mazeSize + 0.5, gridSize / mazeSize + 0.5);
-}
-
-function renderEnd(end, mazeSize) {
-    context.drawImage(end.image,
-    end.location.x * (gridSize / mazeSize) + 5, end.location.y * (gridSize / mazeSize) + 5,
-    gridSize / mazeSize - 10 , gridSize / mazeSize - 10 );
+function renderObject(object, mazeSize) {
+    if (object.image.isReady) {
+        context.drawImage(object.image,
+            object.location.x * (gridSize / mazeSize) + object.deficit / -2, 
+            object.location.y * (gridSize / mazeSize) + object.deficit / -2,
+            gridSize / mazeSize + object.deficit, gridSize / mazeSize + object.deficit);
+    }
+    
 }
 
