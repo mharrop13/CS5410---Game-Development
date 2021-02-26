@@ -197,10 +197,10 @@ class Maze {
         }
 
         this.solution = [];
-        current = this.maze[this.finish.col][this.finish.row];
+        current = this.maze[this.size - 1][this.size - 1];
         while (current.col !== 0 && current.row != 0) {
-            current = current.previous;
             this.solution.push(current);
+            current = current.previous;
         }
         
     }
