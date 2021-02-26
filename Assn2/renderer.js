@@ -52,6 +52,7 @@ function renderMaze(context, maze, playerObject) {
     context.stroke();
 
     //Draw Borders
+    context.beginPath();
     context.moveTo(0, 0);
     context.lineTo(gridSize - 1, 0);
     context.lineTo(gridSize- 1, gridSize - 1);
@@ -81,15 +82,41 @@ function renderGameOver(context, canvas) {
     context.strokeText(msg, canvas.width/ 2 - 400, canvas.height/2);
 }
 
-
 function renderSolution(context, maze) {
-    
     for (let spot of maze.solution) {
         context.beginPath();
         context.arc(spot.col * (gridSize / maze.size) + (gridSize / maze.size) / 2 , 
         spot.row * (gridSize / maze.size) + (gridSize / maze.size) / 2, 
-        .5 * (gridSize / maze.size), 0,  2 * Math.PI); 
+        .1 * (gridSize / maze.size), 0,  2 * Math.PI); 
         context.fillStyle = 'rgba(0, 255, 0, 0.3';
+        context.fill();
+        context.closePath();
+    }
+    
+}
+
+function renderHint(context, maze) {
+    let spot = maze.solution[maze.solution.length - 1];
+    if (spot) {
+        context.beginPath();
+        context.arc(spot.col * (gridSize / maze.size) + (gridSize / maze.size) / 2 , 
+        spot.row * (gridSize / maze.size) + (gridSize / maze.size) / 2, 
+        .1 * (gridSize / maze.size), 0,  2 * Math.PI); 
+        context.fillStyle = 'rgba(0, 255, 0, 0.3';
+        context.fill();
+        context.closePath();
+    }
+    
+
+}
+
+function renderBreadCrumbs(context, maze, breadCrumbs) {
+    for (let spot of breadCrumbs) {
+        context.beginPath();
+        context.arc(spot.col * (gridSize / maze.size) + (gridSize / maze.size) / 2 , 
+        spot.row * (gridSize / maze.size) + (gridSize / maze.size) / 2, 
+        .05 * (gridSize / maze.size), 0,  2 * Math.PI); 
+        context.fillStyle = 'rgba(0, 255, 0, 0.9';
         context.fill();
         context.closePath();
     }

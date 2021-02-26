@@ -28,25 +28,33 @@ class mazeObject {
     moveRight(maze) {
         if (this.col < maze.size - 1 && maze.maze[this.col][this.row].edges.right !== "wall") {
             this.col = this.col + 1;
+            return true;
         }
+        return false;
     }
 
     moveLeft(maze) {
         if (this.col > 0 && maze.maze[this.col][this.row].edges.left !== "wall") {
             this.col = this.col - 1;
+            return true;
         }
+        return false;
     }
 
     moveUp(maze) {
         if (this.row > 0 && maze.maze[this.col][this.row].edges.top !== "wall") {
             this.row = this.row - 1;
+            return true;
         }
+        return false;
     }
 
     moveDown(maze) {
         if (this.row < maze.size - 1 && maze.maze[this.col][this.row].edges.bottom !== "wall") {
             this.row = this.row + 1;
+            return true;
         }
+        return false;
     }
 
 
@@ -73,7 +81,7 @@ class Maze {
     constructor(size) {
         this.size = size;
         this.maze = [];
-        this.start = new mazeObject("start", 0, 0, 0.5, 'images/start.png');
+        this.start = new mazeObject("start", 0, 0, -20, 'images/start.png');
         this.finish = new mazeObject("finish", this.size - 1, this.size - 1, 0, 'images/finish.png');
         this.solution = null;
 
@@ -82,6 +90,7 @@ class Maze {
     }
 
     generateMaze() {
+        console.log("generating maze");
         //Create a grid of unvisited cells
         for (let col = 0; col < this.size; col++) {
             this.maze.push([]);
@@ -171,6 +180,7 @@ class Maze {
     }
 
     solveMaze() {
+        console.log("Building SOlution");
         //reset all cells visited status to false
         for (let j = 0; j < this.size; j++) {
             for (let k = 0; k < this.size; k++) {
@@ -181,8 +191,7 @@ class Maze {
         let stack = [];
         let current = this.maze[0][0];
         stack.push(current);
-        let iter = 1;
-        while (iter < this.size * this.size ) {
+        while (current !== this.maze[this.finish.col][this.finish.row]) {
             current = stack.pop()
             current.visited = true;
 
@@ -193,7 +202,6 @@ class Maze {
                     stack.push(temp);
                 }
             }
-            iter += 1
         }
 
         this.solution = [];
@@ -202,6 +210,8 @@ class Maze {
             current = current.previous;
             this.solution.push(current);
         }
+        //Pop the [0,0] off  
+        this.solution.pop();
     }
 
     shuffle(array) {

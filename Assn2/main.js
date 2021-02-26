@@ -12,30 +12,38 @@ let player;
 let score;
 let gameOver;
 let gameObjects;
+//Toggle Variables
 let hintToggle;
 let breadCrumbToggle;
 let pathToFinishToggle;
-var input = new Set();
+
+//Updating variables
+let input = new Set();
+let breadCrumbs;
+let playerTrailHistory;
+let playerMoved;
+
 
 function processInput() {
     for (let i of input) {
+        playerMoved = false;
         if (i.key == 'a' || i.key == 'j' || i.key == "ArrowLeft") {
-            player.moveLeft(maze);
+            playerMoved = player.moveLeft(maze);
         } else if (i.key == 'd' || i.key == 'l' || i.key == "ArrowRight") {
-            player.moveRight(maze);
+            playerMoved = player.moveRight(maze);
         } else if (i.key == 'w' || i.key == 'i' || i.key == "ArrowUp") {
-            player.moveUp(maze);
+            playerMoved = player.moveUp(maze);
         } else if (i.key == 's' || i.key == 'k' || i.key == "ArrowDown") {
-            player.moveDown(maze);
+            playerMoved = player.moveDown(maze);
         }
         if (i.key == 'h') {
             hintToggle = !hintToggle;
         }
         if (i.key == 'b') {
-            breadCrumbToggle != breadCrumbToggle;
+            breadCrumbToggle = !breadCrumbToggle;
         }
         if (i.key == 'p') {
-            pathToFinishToggle != pathToFinishToggle;
+            pathToFinishToggle = !pathToFinishToggle;
         }
         input.delete(i);
     }
@@ -54,7 +62,6 @@ function update() {
         }
     }
 
-
     //Update Score
     for (let ob of gameObjects) {
         if (player.col === ob.col && player.row === ob.row) {
@@ -63,6 +70,28 @@ function update() {
         }
     }
     scoreOutput.innerHTML = score;
+
+    //Update bread Crumb trail
+    if (!breadCrumbs.has(maze.maze[player.col][player.row])) {
+        breadCrumbs.add(maze.maze[player.col][player.row]);
+    }
+
+    //Update Solution Trail
+    if (playerMoved) {
+        let currentCell = maze.maze[player.col][player.row];
+        playerTrailHistory.push(currentCell);
+        playerMoved = false;
+        let lastSolutionCell = maze.solution[maze.solution.length - 1];
+        if (currentCell === lastSolutionCell) {     //Player  Moved into a cell contained in the solution
+            maze.solution.splice(-1, 1);
+        } else {    //Player moved to cell not in the solution so we need to add the players last cell to solution
+            let lastCell = playerTrailHistory[playerTrailHistory.length - 2];
+            maze.solution.push(lastCell);
+        }
+    }
+    
+
+
 }
 
 
@@ -80,18 +109,28 @@ function render() {
     }
     //Render Player Last to keep on top of other items
     renderObject(context, player, maze.size);
-    renderSolution(context, maze);
+    if (hintToggle) {
+        renderHint(context, maze);
+    }
+    if (breadCrumbToggle) {
+        renderBreadCrumbs(context, maze, breadCrumbs);
+    }
+    if (pathToFinishToggle) {
+        renderSolution(context, maze);
+    }
+    
+    
 }
 
 function gameLoop() {
     processInput();
     update()
     render();
-    maze.solveMaze();
     requestAnimationFrame(gameLoop);
 }
 
 function initialize(gridParam) {
+    console.log("Initializing");
     canvas = document.getElementById('gameCanvas');
     context = canvas.getContext('2d');
     scoreOutput = document.getElementById('Score');
@@ -103,6 +142,9 @@ function initialize(gridParam) {
     gameObjects = new Set();
     player = new mazeObject("player", 0, 0, -10, 'images/character.png');
     score = 0;
+    breadCrumbs = new Set();
+    playerTrailHistory = [];
+    playerTrailHistory.push(maze.maze[0][0]);
 
     //Check for high score and if so, display it
     if (localStorage.getItem(localStorageName) == null) {
@@ -141,12 +183,7 @@ function initialize(gridParam) {
         gameObjects.add(money);
     }
 
-    maze.solution = [];
-    let current = maze.maze[maze.finish.col][maze.finish.row];
-    while (current !== maze.maze[0][0]) {
-        current = current.previous;
-        maze.solution.push(current);
-    }
+    
     
     document.onkeyup = function(e) {
         e.preventDefault();
