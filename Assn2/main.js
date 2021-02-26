@@ -140,6 +140,13 @@ function initialize(gridParam) {
         }
         gameObjects.add(money);
     }
+
+    maze.solution = [];
+    let current = maze.maze[maze.finish.col][maze.finish.row];
+    while (current !== maze.maze[0][0]) {
+        current = current.previous;
+        maze.solution.push(current);
+    }
     
     document.onkeyup = function(e) {
         e.preventDefault();
