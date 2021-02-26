@@ -57,6 +57,7 @@ class mazeCell {
         this.col = col;
         this.row = row;
         this.visited = false;
+        this.previous = null;
         this.neighbors = [];
         this.edges =  {
             top: "wall",
@@ -73,11 +74,11 @@ class Maze {
         this.size = size;
         this.maze = [];
         this.start = new mazeObject("start", 0, 0, 0.5, 'images/start.png');
-        this.finish = new mazeObject("finish", this.getRandom().x, this.getRandom().y, 0, 'images/finish.png');
+        this.finish = new mazeObject("finish", this.size - 1, this.size - 1, 0, 'images/finish.png');
         this.solution = null;
 
-
         this.generateMaze()
+        this.solveMaze()
     }
 
     generateMaze() {
@@ -169,6 +170,41 @@ class Maze {
         }
     }
 
+    solveMaze() {
+        //reset all cells visited status to false
+        for (let j = 0; j < this.size; j++) {
+            for (let k = 0; k < this.size; k++) {
+                this.maze[j][k].visited = false;
+            }
+        }
+
+        let stack = [];
+        let current = this.maze[0][0];
+        stack.push(current);
+        let iter = 1;
+        while (iter < this.size * this.size ) {
+            current = stack.pop()
+            current.visited = true;
+
+            for (let i in current.edges) {
+                let temp = current.edges[i];
+                if (temp !== "wall" && temp.visited !== true) {
+                    temp.previous = current;
+                    stack.push(temp);
+                }
+            }
+            iter += 1
+        }
+
+        this.solution = [];
+        current = this.maze[this.finish.col][this.finish.row];
+        while (current.col !== 0 && current.row != 0) {
+            current = current.previous;
+            this.solution.push(current);
+        }
+        
+    }
+
     shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * i);
@@ -176,19 +212,6 @@ class Maze {
             array[i] = array[j];
             array[j] = temp;
         }
-    }
-
-    getRandom() {
-        let finishX = Math.floor(Math.random() * this.size);
-        let finishY = Math.floor(Math.random() * this.size);
-        while (finishX == 0 && finishY == 0 || finishX == 1 & finishY == 1) {
-            finishX = Math.floor(Math.random() * this.size);
-            finishY = Math.floor(Math.random() * this.size);
-        }
-        return {
-            x: finishX,
-            y: finishY
-        };
     }
 
 }

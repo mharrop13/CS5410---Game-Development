@@ -86,6 +86,7 @@ function gameLoop() {
     processInput();
     update()
     render();
+    maze.solveMaze();
     requestAnimationFrame(gameLoop);
 }
 
