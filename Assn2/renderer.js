@@ -82,3 +82,16 @@ function renderGameOver(context, canvas) {
 }
 
 
+function renderSolution(context, maze) {
+    
+    for (let spot of maze.solution) {
+        context.beginPath();
+        context.arc(spot.col * (gridSize / maze.size) + (gridSize / maze.size) / 2 , 
+        spot.row * (gridSize / maze.size) + (gridSize / maze.size) / 2, 
+        .5 * (gridSize / maze.size), 0,  2 * Math.PI); 
+        context.fillStyle = 'rgba(0, 255, 0, 0.3';
+        context.fill();
+        context.closePath();
+    }
+    
+}

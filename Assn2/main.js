@@ -80,6 +80,7 @@ function render() {
     }
     //Render Player Last to keep on top of other items
     renderObject(context, player, maze.size);
+    renderSolution(context, maze);
 }
 
 function gameLoop() {
@@ -139,7 +140,7 @@ function initialize(gridParam) {
         }
         gameObjects.add(money);
     }
-
+    
     document.onkeyup = function(e) {
         e.preventDefault();
         input.add(e);
