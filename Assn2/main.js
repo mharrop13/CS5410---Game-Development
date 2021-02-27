@@ -4,17 +4,22 @@ document.title = "CS5410 HW1 - Browser GameLoop";
 let canvas;
 let context;
 let scoreOutput;
+let highScoreOutput;
+let timerOutput;
+let moveNumberOutput;
 let localStorageName = "CS5410MazeGameHighScore";
-let highScore;
 //Game Variables
+let time;
+let score;
+let highScore;
+let moveNumber;
 let maze;
 let player;
-let score;
 let gameOver;
 let gameObjects;
 //Toggle Variables
 let hintToggle;
-let breadCrumbToggle;
+let breadCrumbToggle = true;
 let pathToFinishToggle;
 
 //Updating variables
@@ -70,6 +75,10 @@ function update() {
         }
     }
     scoreOutput.innerHTML = score;
+
+    //Update Move Number
+    moveNumber = playerTrailHistory.length - 1;
+    moveNumberOutput.innerHTML = moveNumber;
 
     //Update bread Crumb trail
     if (!breadCrumbs.has(maze.maze[player.col][player.row])) {
@@ -135,6 +144,8 @@ function initialize(gridParam) {
     context = canvas.getContext('2d');
     scoreOutput = document.getElementById('Score');
     highScoreOutput = document.getElementById('HighScore');
+    timerOutput = document.getElementById('Timer');
+    moveNumberOutput = document.getElementById('MoveNumber');
 
     //Generate Maze and Player
     gameOver = false;
@@ -142,6 +153,7 @@ function initialize(gridParam) {
     gameObjects = new Set();
     player = new mazeObject("player", 0, 0, -10, 'images/character.png');
     score = 0;
+    moveNumber = 0;
     breadCrumbs = new Set();
     playerTrailHistory = [];
     playerTrailHistory.push(maze.maze[0][0]);
@@ -154,9 +166,24 @@ function initialize(gridParam) {
     }
     highScoreOutput.innerHTML = highScore;
     
-
     //Generate Money for Score
-    for (let j = 0; j < Math.ceil(maze.size / 2); j++) {
+    let modifier = 1;
+    switch (gridParam) { 
+        case 5:
+            modifier = 1;
+            break;
+        case 10:
+            modifier = 2;
+            break;
+        case 15:
+            modifier = 3;
+            break;
+        case 20:
+            modifier = 4;
+            break;
+    }
+    
+    for (let j = 0; j < Math.ceil((maze.size / 2)) * modifier; j++) {
         let money;
         let ran = Math.floor(Math.random() * 3);
         let ranX = Math.floor(Math.random() * maze.size);
@@ -182,6 +209,34 @@ function initialize(gridParam) {
         }
         gameObjects.add(money);
     }
+
+    //Start Timer
+    time = 0;
+    timer();
+
+    function timer() {
+        setTimeout(function() {
+            if (!gameOver) {
+                time++;
+                let min = Math.floor(time / 60);
+                let seconds = time % 60;
+
+                timeString = min.toString().padStart(2, '0') 
+                + ':' + seconds.toString().padStart(2, '0');
+
+                timerOutput.innerHTML = timeString;
+                timer();
+            }
+            
+        }, 1000)
+    }
+
+    //             time++;
+    //             let min = Math.floor(time / 60);
+    //             let seconds = time % 60;
+    //             timerOutput.innerHTML = min.toString.padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+    //             timer();
+
 
     
     

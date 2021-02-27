@@ -41,6 +41,7 @@ function drawCell(context, cell, mazeSize) {
 function renderMaze(context, maze, playerObject) {
     //Draw Cells
     context.beginPath();
+    context.lineCap = "round";
     for (let col = 0; col < maze.size; col++) {
         for (let row = 0; row < maze.size; row++) {
             drawCell(context, maze.maze[col][row], maze.size,);
@@ -77,9 +78,11 @@ function renderObject(context, mazeObject, mazeSize) {
 
 function renderGameOver(context, canvas) {
     let msg = "Game Over"
+    context.beginPath();
     context.font = "bold 150px Arial"
     context.fillText(msg, canvas.width / 2 - 400, canvas.height / 2);
     context.strokeText(msg, canvas.width/ 2 - 400, canvas.height/2);
+    context.closePath();
 }
 
 function renderSolution(context, maze) {
