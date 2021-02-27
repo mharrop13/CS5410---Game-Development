@@ -91,7 +91,6 @@ class Maze {
 
     generateMaze() {
         //Based on Randomized Prims
-        console.log("generating maze");
         //Create a grid of unvisited cells
         for (let col = 0; col < this.size; col++) {
             this.maze.push([]);
@@ -183,7 +182,6 @@ class Maze {
 
     solveMaze() {
         //Go through maze and set cell visited status to false
-        console.log("Building SOlution");
         //reset all cells visited status to false
         for (let j = 0; j < this.size; j++) {
             for (let k = 0; k < this.size; k++) {

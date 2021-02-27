@@ -10,6 +10,7 @@ let moveNumberOutput;
 let localStorageName = "CS5410MazeGameHighScore";
 //Game Variables
 let time;
+let timeOutVar;
 let score;
 let highScore;
 let moveNumber;
@@ -27,6 +28,8 @@ let input = new Set();
 let breadCrumbs;
 let playerTrailHistory;
 let playerMoved;
+
+
 
 
 function processInput() {
@@ -144,13 +147,14 @@ function gameLoop() {
 }
 
 function initialize(gridParam) {
-    console.log("Initializing");
     canvas = document.getElementById('gameCanvas');
     context = canvas.getContext('2d');
     scoreOutput = document.getElementById('Score');
     highScoreOutput = document.getElementById('HighScore');
     timerOutput = document.getElementById('Timer');
     moveNumberOutput = document.getElementById('MoveNumber');
+    clearTimeout(timeOutVar);
+    timerOutput.innerHTML = "00:00";
 
     //Generate Maze and Player
     gameOver = false;
@@ -221,7 +225,7 @@ function initialize(gridParam) {
     timer();
 
     function timer() {
-        setTimeout(function() {
+        timeOutVar = setTimeout(function() {
             if (!gameOver) {
                 time++;
                 let min = Math.floor(time / 60);
