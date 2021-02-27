@@ -122,8 +122,6 @@ function render() {
         renderObject(context, item, maze.size);
     }
 
-    //Render hint if toggled
-    renderObject(context, player, maze.size);
     if (hintToggle) {
         renderHint(context, maze);
     }
@@ -137,6 +135,9 @@ function render() {
     if (pathToFinishToggle) {
         renderSolution(context, maze);
     }
+
+    //Render hint if toggled
+    renderObject(context, player, maze.size);
 }
 
 function gameLoop() {
