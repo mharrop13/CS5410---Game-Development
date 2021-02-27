@@ -98,14 +98,14 @@ function update() {
             maze.solution.push(lastCell);
         }
     }
-    
-
-
 }
 
 
 function render() {
+    //Clear Canvas
     context.clearRect(0,0, canvas.width, canvas.height);
+
+    //Render Maze
     renderMaze(context, maze, player);
 
     //Check for Game Over
@@ -113,22 +113,27 @@ function render() {
         renderGameOver(context, canvas);
         return;
     }
+
+    //render Game Objects
     for(let item of gameObjects) {
         renderObject(context, item, maze.size);
     }
-    //Render Player Last to keep on top of other items
+
+    //Render hint if toggled
     renderObject(context, player, maze.size);
     if (hintToggle) {
         renderHint(context, maze);
     }
+
+    //Render bread crumb trail if toggled
     if (breadCrumbToggle) {
         renderBreadCrumbs(context, maze, breadCrumbs);
     }
+    
+    //Render solution path if toggled
     if (pathToFinishToggle) {
         renderSolution(context, maze);
     }
-    
-    
 }
 
 function gameLoop() {
@@ -166,7 +171,7 @@ function initialize(gridParam) {
     }
     highScoreOutput.innerHTML = highScore;
     
-    //Generate Money for Score
+    //Modifier for generating Money
     let modifier = 1;
     switch (gridParam) { 
         case 5:
@@ -183,6 +188,7 @@ function initialize(gridParam) {
             break;
     }
     
+    //Generate Money for Score
     for (let j = 0; j < Math.ceil((maze.size / 2)) * modifier; j++) {
         let money;
         let ran = Math.floor(Math.random() * 3);
@@ -231,15 +237,6 @@ function initialize(gridParam) {
         }, 1000)
     }
 
-    //             time++;
-    //             let min = Math.floor(time / 60);
-    //             let seconds = time % 60;
-    //             timerOutput.innerHTML = min.toString.padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-    //             timer();
-
-
-    
-    
     document.onkeyup = function(e) {
         e.preventDefault();
         input.add(e);

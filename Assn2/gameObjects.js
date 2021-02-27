@@ -90,6 +90,7 @@ class Maze {
     }
 
     generateMaze() {
+        //Based on Randomized Prims
         console.log("generating maze");
         //Create a grid of unvisited cells
         for (let col = 0; col < this.size; col++) {
@@ -163,7 +164,7 @@ class Maze {
         } else if (frontierCell.col > ranMazeCell.col) {    //Maze Cell is on right of Frontier Cell
             frontierCell.edges.left = ranMazeCell;
             ranMazeCell.edges.right = frontierCell;
-        } else if (frontierCell.col < ranMazeCell.col) {                                        //Maze Cell is on left of Frontier Cell
+        } else if (frontierCell.col < ranMazeCell.col) {    //Maze Cell is on left of Frontier Cell
             frontierCell.edges.right = ranMazeCell;
             ranMazeCell.edges.left = frontierCell;
         }
@@ -174,12 +175,14 @@ class Maze {
                 frontier.add(adjacentCell);
             }
         }
+        //Recurse if still cells in frontier
         if (frontier.size > 0) {
             this.processFrontier(frontier);
         }
     }
 
     solveMaze() {
+        //Go through maze and set cell visited status to false
         console.log("Building SOlution");
         //reset all cells visited status to false
         for (let j = 0; j < this.size; j++) {
@@ -187,7 +190,7 @@ class Maze {
                 this.maze[j][k].visited = false;
             }
         }
-
+        //Go through maze and maze each cell aware of it's previous cell
         let stack = [];
         let current = this.maze[0][0];
         stack.push(current);
@@ -203,17 +206,19 @@ class Maze {
                 }
             }
         }
-
+        // Populate solution array by iterating backward from finish to start
         this.solution = [];
         current = this.maze[this.finish.col][this.finish.row];
         while (current !== this.maze[0][0]) {
             current = current.previous;
             this.solution.push(current);
         }
-        //Pop the [0,0] off  
+
+        //Pop the [0,0] off
         this.solution.pop();
     }
 
+    //Used to give the array a little extra shuffle to get truly random pick
     shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * i);
